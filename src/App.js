@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { TextField as MUITextField } from "@material-ui/core";
+import { TextField as MUITextField, Button } from "@material-ui/core";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const Container = styled.div`
   display: flex;
@@ -9,6 +10,13 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 100px;
+`;
+
+const ContainerButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 50px;
 `;
 
 const ContainerInputs = styled.div`
@@ -34,9 +42,13 @@ function App() {
   const [bottomRight, setBottomRight] = useState(0);
   const [bottomLeft, setBottomLeft] = useState(0);
 
+  const [copied, setCopied] = useState(false);
+
+  const borderRadius = `${topLeft}px ${topRight}px ${bottomRight}px ${bottomLeft}px`;
+
   const styles = {
     box: {
-      borderRadius: `${topLeft}px ${topRight}px ${bottomRight}px ${bottomLeft}px`,
+      borderRadius,
       backgroundColor: "#000",
       height: 250,
       width: 250
@@ -59,7 +71,7 @@ function App() {
             style={styles.inputs}
             value={topLeft}
             onChange={e => {
-              setTopLeft(e.target.value);
+              setTopLeft(parseInt(e.target.value));
             }}
           />
           <TextField
@@ -68,7 +80,7 @@ function App() {
             style={styles.inputs}
             value={topRight}
             onChange={e => {
-              setTopRight(e.target.value);
+              setTopRight(parseInt(e.target.value));
             }}
           />
           <TextField
@@ -77,7 +89,7 @@ function App() {
             value={bottomRight}
             style={styles.inputs}
             onChange={e => {
-              setBottomRight(e.target.value);
+              setBottomRight(parseInt(e.target.value));
             }}
           />
           <TextField
@@ -86,9 +98,26 @@ function App() {
             value={bottomLeft}
             style={styles.inputs}
             onChange={e => {
-              setBottomLeft(e.target.value);
+              setBottomLeft(parseInt(e.target.value));
             }}
           />
+          <ContainerButton>
+            <CopyToClipboard text={`border-radius: ${borderRadius};`}>
+              <Button
+                variant="outlined"
+                color="primary"
+                style={styles.inputs}
+                fullWidth
+                onClick={() => {
+                  setCopied(true);
+                }}
+              >
+                {copied
+                  ? "Copiado para a area de transferencia"
+                  : "Copiar para a area de transferencia"}
+              </Button>
+            </CopyToClipboard>
+          </ContainerButton>
         </ContainerInputs>
       </Container>
     </>
